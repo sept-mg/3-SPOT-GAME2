@@ -131,12 +131,12 @@ public class Board {
 
             if(videCaseListIndex < videCaseList.length && i == videCaseList[videCaseListIndex] || currCase == currentPlayedColor) {
                 Directions moveable = moveable(i);
-                int j = 0;
-                for(; j < moveable.toInt(); ++j) {
+                int moveableInt = moveable.toInt();
+                for(int j = 0; j < moveable.toInt(); ++j) {
                     sb.append(++accDirection).append(" ");
                     AdjDirection[] allowedOrientations = moveable.getAllOrientations();
                     
-                    while(allowedOrientations[j] == null) {
+                    while(allowedOrientations[j] == null && j < moveableInt) {
                         ++j;
                     }
 
@@ -145,7 +145,7 @@ public class Board {
                 if(currCase == ColorCase.EMPTY)
                     ++videCaseListIndex;
 
-                if(j == 0)
+                if(moveableInt == 0)
                     sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
             }
             else {
