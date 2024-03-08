@@ -28,6 +28,14 @@ public class ThreeSpotGame
         System.out.println();
 
         System.out.println(board);
+        System.out.println();
+        board.setCurrentColor(ColorCase.BLUE);
+        System.out.println(board.getPlateauAllMovement());
+        System.out.println();
+
+        board.move(1);
+
+        System.out.println(board);
 
     }
 }
