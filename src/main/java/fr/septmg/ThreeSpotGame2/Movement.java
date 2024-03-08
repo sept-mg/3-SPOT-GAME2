@@ -6,6 +6,8 @@ public class Movement {
 
     public Movement(int index, AdjDirection direction) {
         assert index >= 0 && index < Board.SIZE;
+        assert direction != null;
+        
         this.placement = index;
         this.direction = direction;
     }

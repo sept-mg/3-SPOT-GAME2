@@ -76,7 +76,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>fr.septmg.ThreeSpotGame2.App</mainClass>
+                        <mainClass>fr.septmg.ThreeSpotGame2.ThreeSpotGame</mainClass>
                     </manifest>
                 </archive>
             </configuration>

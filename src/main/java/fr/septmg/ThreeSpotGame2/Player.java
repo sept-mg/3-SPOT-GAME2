@@ -14,15 +14,15 @@ public class Player {
     }
 
     public String getPossibleDisplament() {
-        App.board.setCurrentColor(color);
+        ThreeSpotGame.board.setCurrentColor(color);
         isPlaying = true;
-        return App.board.getPlateauAllMovement();
+        return ThreeSpotGame.board.getPlateauAllMovement();
     }
 
     public String getPossibleDisplamentWhite() {
-        App.board.setCurrentColor(ColorCase.WHITE);
+        ThreeSpotGame.board.setCurrentColor(ColorCase.WHITE);
         isPlaying = true;
-        return App.board.getPlateauAllMovement();
+        return ThreeSpotGame.board.getPlateauAllMovement();
     }
 
     public boolean displacement(String id) {
@@ -37,7 +37,7 @@ public class Player {
         }
         
 
-        App.board.setCurrentColor(color);
+        ThreeSpotGame.board.setCurrentColor(color);
 
         try {
             // score += App.board.move(i);

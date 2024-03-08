@@ -8,14 +8,12 @@ public class Block {
     public Block(ColorCase color, int[] positions) {
         assert positionListInRange(positions);
         this.color = color;
-
-        this.positions = new ColorCase[Board.SIZE];
         makePosition(positions);
 
     }
 
     private void makePosition(int[] position) {
-        
+        this.positions = new ColorCase[Board.SIZE];
         for (int i : position) {
             assert (i >= 0 && i < Board.SIZE);
             this.positions[i] = color;

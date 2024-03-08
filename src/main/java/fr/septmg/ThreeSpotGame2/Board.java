@@ -66,16 +66,22 @@ public class Board {
         if(position >= Y_SIZE) {
             ColorCase temp = getCase(position - Y_SIZE);
 
-            if(temp == ColorCase.EMPTY || temp == currentPlayedColor) {
+            if(temp == ColorCase.EMPTY) {
+                direction.add(AdjDirection.UP);
+            }
+            else if (temp == currentPlayedColor && getCase(position) == ColorCase.EMPTY) {
                 direction.add(AdjDirection.UP);
             }
         }
         
         // right direction test
-        if(position % X_SIZE < X_SIZE) {
+        if(position % X_SIZE < X_SIZE && (position + 1) % Y_SIZE != 0) {
             ColorCase temp = getCase(position + 1);
 
-            if(temp == ColorCase.EMPTY || temp == currentPlayedColor) {
+            if(temp == ColorCase.EMPTY) {
+                direction.add(AdjDirection.RIGHT);
+
+            } else if(temp == currentPlayedColor && getCase(position) == ColorCase.EMPTY) {
                 direction.add(AdjDirection.RIGHT);
             }
         }
@@ -95,7 +101,7 @@ public class Board {
             currCase = getCase(i);
 
             if(currCase == ColorCase.EMPTY) {
-                sb.append(i % Y_SIZE == X_SIZE - 1 ? "0" : ". ");
+                sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
                 videCaseList[videCaseListIndex++] = i;
             }
             else {
@@ -121,19 +127,32 @@ public class Board {
             if(i % X_SIZE == 0 && i != 0) {
                 sb.append("\n");
             }
+            currCase = getCase(i);
 
-            if(videCaseListIndex < videCaseList.length && i == videCaseList[videCaseListIndex]) {
-                for(int j = 0; j < moveable(i).toInt(); ++j) {
+            if(videCaseListIndex < videCaseList.length && i == videCaseList[videCaseListIndex] || currCase == currentPlayedColor) {
+                Directions moveable = moveable(i);
+                int j = 0;
+                for(; j < moveable.toInt(); ++j) {
                     sb.append(++accDirection).append(" ");
-                    currentMovements[accDirection - 1] = new Movement(i, moveable(i).getAllOrientations()[j]);
+                    AdjDirection[] allowedOrientations = moveable.getAllOrientations();
+                    
+                    while(allowedOrientations[j] == null) {
+                        ++j;
+                    }
+
+                    currentMovements[accDirection - 1] = new Movement(i, allowedOrientations[j]);
                 }
-                ++videCaseListIndex;
+                if(currCase == ColorCase.EMPTY)
+                    ++videCaseListIndex;
+
+                if(j == 0)
+                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
             }
             else {
-                currCase = getCase(i);
+                
 
                 if(currCase == ColorCase.EMPTY || currCase == currentPlayedColor) {
-                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "0" : ". ");
+                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
                 }
                 else {
                     sb.append(currCase.toString().charAt(0));
@@ -151,7 +170,7 @@ public class Board {
     }
     
     public int move(int idMovement) {
-        assert idMovement <= maxMovement;
+        assert idMovement <= maxMovement && idMovement > 0;
         assert currentPlayedColor != null && currentPlayedColor != ColorCase.EMPTY;
 
         --idMovement;
@@ -173,6 +192,7 @@ public class Board {
                 throw new IllegalStateException("Unexpected value: " + currentPlayedColor);
         }
 
+        currentPlayedColor = null;
         return point;
     }
 
