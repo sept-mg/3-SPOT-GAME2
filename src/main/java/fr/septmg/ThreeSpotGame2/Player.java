@@ -14,15 +14,15 @@ public class Player {
     }
 
     public String getPossibleDisplament() {
-        ThreeSpotGame.board.setCurrentColor(color);
+        ThreeSpotGame.getBoard().setCurrentColor(color);
         isPlaying = true;
-        return ThreeSpotGame.board.getPlateauAllMovement();
+        return ThreeSpotGame.getBoard().getPlateauAllMovement();
     }
 
     public String getPossibleDisplamentWhite() {
-        ThreeSpotGame.board.setCurrentColor(ColorCase.WHITE);
+        ThreeSpotGame.getBoard().setCurrentColor(ColorCase.WHITE);
         isPlaying = true;
-        return ThreeSpotGame.board.getPlateauAllMovement();
+        return ThreeSpotGame.getBoard().getPlateauAllMovement();
     }
 
     public boolean displacement(String id) {
@@ -37,10 +37,10 @@ public class Player {
         }
         
 
-        ThreeSpotGame.board.setCurrentColor(color);
+        ThreeSpotGame.getBoard().setCurrentColor(color);
 
         try {
-            // score += App.board.move(i);
+            score += ThreeSpotGame.getBoard().move(i);
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
