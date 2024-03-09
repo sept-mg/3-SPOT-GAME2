@@ -12,17 +12,18 @@ public class ThreeSpotGame
     final static int MAX_SCORE = 12;
     final static int MIN_SCORE_TO_WIN = 6;
     
-    public /*static*/ void main( String[] args )
+    public static void main( String[] args )
     {
         board = new Board();
 
         ColorCase red = ColorCase.RED;
         ColorCase blue = ColorCase.BLUE;
         String input = "";
+        sc = new Scanner(System.in);
 
         do {
             System.out.println("Choose the color of your player (R or B): ");
-            sc = new Scanner(System.in);
+            
             input = sc.nextLine();
         }
         while (!input.equals("R") && !input.equals("B"));
@@ -41,9 +42,9 @@ public class ThreeSpotGame
         boolean breakq = false;
         while (player2.getScore() < MAX_SCORE && !breakq)
         {
-            displacement(player1);
+            displacement(player1, player2);
             if(player1.getScore() < MAX_SCORE) {
-                displacement(player2);
+                displacement(player2, player1);
             }
             else {
                 breakq = true;
@@ -70,36 +71,56 @@ public class ThreeSpotGame
         sc.close();
     }
 
-    private static void displacement(Player currentPlayer) {
-        StringBuilder sb = new StringBuilder();
+    private static void displacement(Player currenPlayer, Player secondPlayer) {
+        StringBuilder startStringBuilder = new StringBuilder("Player ")
+                                                    .append(currenPlayer.getId())
+                                                    .append(" (Your Score ");
 
+        StringBuilder updatableStringBuilder = new StringBuilder(Integer.toString(currenPlayer.getScore()))
+                                                    .append(" to ")
+                                                    .append(Integer.toString(secondPlayer.getScore()))
+                                                    .append(") choose a displacement : (block ");
+
+        StringBuilder finishStringBuilder = new StringBuilder(currenPlayer.getColor().toString())
+                                                    .append(")");
+
+        StringBuilder totalStringBuilder = new StringBuilder(startStringBuilder)
+                                                    .append(updatableStringBuilder)
+                                                    .append(finishStringBuilder);
         boolean good = false;
         
-        sb.append("Player ");
-        sb.append(currentPlayer.getId());
-        sb.append(" choose a displacement : (block ");
+        board.setCurrentColor(currenPlayer.getColor());
 
         System.out.println(board);
         
-        System.out.println(currentPlayer.getPossibleDisplament());
+        System.out.println(currenPlayer.getPossibleDisplament());
         do {
-            System.out.println(sb.toString() + currentPlayer.getColor() + ")");
 
-            sc = new Scanner(System.in);
+            System.out.println(totalStringBuilder);
 
-            good = currentPlayer.displacement(sc.nextLine());
+            good = currenPlayer.displacement(sc.nextLine());
         }
         while (!good);
         
+        updatableStringBuilder = new StringBuilder(Integer.toString(currenPlayer.getScore()))
+                                        .append(" to ")
+                                        .append(Integer.toString(secondPlayer.getScore()))
+                                        .append(") choose a displacement : (block ");
+
+        finishStringBuilder = new StringBuilder("WHITE)");
+
+        totalStringBuilder = new StringBuilder(startStringBuilder)
+                                    .append(updatableStringBuilder)
+                                    .append(finishStringBuilder);
+        
+        board.setCurrentColor(ColorCase.WHITE);
         System.out.println(board);
 
-        System.out.println(currentPlayer.getPossibleDisplamentWhite());
+        System.out.println(currenPlayer.getPossibleDisplamentWhite());
         do {
-            System.out.println(sb.toString() + "WHITE)");
+            System.out.println(totalStringBuilder.toString());
 
-            sc = new Scanner(System.in);
-
-            good = currentPlayer.displacement(sc.nextLine());
+            good = currenPlayer.displacement(sc.nextLine(), ColorCase.WHITE);
         }
         while (!good);
     }

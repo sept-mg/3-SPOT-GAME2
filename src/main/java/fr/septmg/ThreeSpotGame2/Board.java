@@ -113,7 +113,7 @@ public class Board {
         return sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n").toString();
     }
 
-    public String getPlateauAllMovement() {
+    public String getBoardAllMovement() {
         assert videCaseList.length > 0;
         assert currentPlayedColor != null && currentPlayedColor != ColorCase.EMPTY;
         
@@ -227,5 +227,4 @@ public class Board {
 
         return point;
     }
-
 }

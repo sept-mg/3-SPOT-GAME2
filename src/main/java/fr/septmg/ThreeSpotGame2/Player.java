@@ -16,17 +16,21 @@ public class Player {
     public String getPossibleDisplament() {
         ThreeSpotGame.getBoard().setCurrentColor(color);
         isPlaying = true;
-        return ThreeSpotGame.getBoard().getPlateauAllMovement();
+        return ThreeSpotGame.getBoard().getBoardAllMovement();
     }
 
     public String getPossibleDisplamentWhite() {
         ThreeSpotGame.getBoard().setCurrentColor(ColorCase.WHITE);
         isPlaying = true;
-        return ThreeSpotGame.getBoard().getPlateauAllMovement();
+        return ThreeSpotGame.getBoard().getBoardAllMovement();
+    }
+    public boolean displacement(String id) {
+        return displacement(id, color);
     }
 
-    public boolean displacement(String id) {
-        assert (isPlaying);
+    public boolean displacement(String id, ColorCase colorMove) {
+        assert isPlaying;
+        assert color == colorMove || color == ColorCase.WHITE;
         int i = 0;
         
         try {
@@ -35,17 +39,19 @@ public class Player {
         catch (NumberFormatException e) {
             return false;
         }
-        
 
-        ThreeSpotGame.getBoard().setCurrentColor(color);
+        boolean validId = i <= ThreeSpotGame.getBoard().getMaxMovement();
+        assert validId;
 
-        try {
-            score += ThreeSpotGame.getBoard().move(i);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        if(!validId){
             return false;
-        }
-        catch (NullPointerException e) {
-            return false;
+        } 
+
+        int temp = ThreeSpotGame.getBoard().move(i);
+        if(colorMove == color) {
+            System.out.println("Score : " + temp);
+            score += temp;
+            System.out.println("Score : " + score);
         }
 
         isPlaying = false;
