@@ -17,6 +17,7 @@ public class Board {
     public static final int Y_SIZE = 3;
     public static final int NB_BLOCK = 3;
 
+    private static final int CASE_STRING_SIZE = 7;
     public Board() {
         int x_milieu = (X_SIZE-1)/2, y_milieu = (Y_SIZE-1)/2;
         int tempRed[] = new int[BLOCK_SIZE], tempWhite[] = new int[BLOCK_SIZE], tempBlue[] = new int[BLOCK_SIZE];
@@ -92,26 +93,24 @@ public class Board {
     public String toString() {
         ColorCase currCase;
         int videCaseListIndex = 0;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("* * * * * * * * * * * * *\n*       *       *       *\n");
 
         for (int i = 0; i < SIZE; ++i) {
             if(i % X_SIZE == 0 && i != 0) {
-                sb.append("\n");
+                sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n*       *       *       *\n");
             }
+
+            sb.append("*");
             currCase = getCase(i);
 
             if(currCase == ColorCase.EMPTY) {
-                sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
+                sb.append(i % Y_SIZE == X_SIZE - 1 ? "   O   " : "       ");
                 videCaseList[videCaseListIndex++] = i;
             }
-            else {
-                sb.append(currCase.toString().charAt(0));
-                sb.append(" ");
-            }
-            
+            else 
+                sb.append("   ").append(currCase.toString().charAt(0)).append("   ");
         }
-
-        return sb.toString();
+        return sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n").toString();
     }
 
     public String getPlateauAllMovement() {
@@ -121,19 +120,27 @@ public class Board {
         ColorCase currCase;
         int videCaseListIndex = 0, accDirection = 0;
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("* * * * * * * * * * * * *\n*       *       *       *\n");
 
         for(int i = 0; i < SIZE; ++i) {
             if(i % X_SIZE == 0 && i != 0) {
-                sb.append("\n");
+                sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n*       *       *       *\n");
             }
+            sb.append("*");
             currCase = getCase(i);
 
             if(videCaseListIndex < videCaseList.length && i == videCaseList[videCaseListIndex] || currCase == currentPlayedColor) {
                 Directions moveable = moveable(i);
                 int moveableInt = moveable.toInt();
+                StringBuilder sd = new StringBuilder();
+                
                 for(int j = 0; j < moveable.toInt(); ++j) {
-                    sb.append(++accDirection).append(" ");
+                    if(j > 0) {
+                        sd.append(" - ");
+                    }
+
+                    sd.append(++accDirection);
+                    
                     AdjDirection[] allowedOrientations = moveable.getAllOrientations();
                     
                     while(allowedOrientations[j] == null && j < moveableInt) {
@@ -146,23 +153,29 @@ public class Board {
                     ++videCaseListIndex;
 
                 if(moveableInt == 0)
-                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
+                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "   O   " : "       ");
+                else{
+                    for (int j = 0; j < (CASE_STRING_SIZE - sd.length())/2 + 1; ++j) {
+                        sb.append(" ");
+                        sd.append(" ");
+                    }
+
+                    sb.append(sd.toString());
+                }
             }
             else {
                 
 
                 if(currCase == ColorCase.EMPTY || currCase == currentPlayedColor) {
-                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "O" : ". ");
+                    sb.append(i % Y_SIZE == X_SIZE - 1 ? "   O   " : "       ");
                 }
-                else {
-                    sb.append(currCase.toString().charAt(0));
-                    sb.append(" ");
-                }
+                else
+                    sb.append("   ").append(currCase.toString().charAt(0)).append("   ");
             }
 
         }
         maxMovement = accDirection;
-        return sb.toString();
+        return sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n").toString();
     }
 
     public int getMaxMovement() {
