@@ -12,7 +12,7 @@ public class ThreeSpotGame
     final static int MAX_SCORE = 12;
     final static int MIN_SCORE_TO_WIN = 6;
     
-    public static void main( String[] args )
+    public /*static*/ void main( String[] args )
     {
         board = new Board();
 
