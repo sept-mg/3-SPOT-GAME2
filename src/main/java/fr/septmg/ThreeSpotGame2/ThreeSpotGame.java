@@ -39,90 +39,101 @@ public class ThreeSpotGame
             player2 = new Player(red, 2);
         }
 
-        boolean breakq = false;
-        while (player2.getScore() < MAX_SCORE && !breakq)
-        {
-            displacement(player1, player2);
-            if(player1.getScore() < MAX_SCORE) {
-                displacement(player2, player1);
-            }
-            else {
-                breakq = true;
-            }
-        }
+        ingame();
 
-        if (player1.getScore() >= MAX_SCORE) {
-            if(player2.getScore() >= MIN_SCORE_TO_WIN) {
-                System.out.println("Player " + player1.getId() + " wins !");
-            }
-            else {
-                System.out.println("Player " + player2.getId() + " wins !");
-            }
-        }
-        else {
-            if(player1.getScore() >= MIN_SCORE_TO_WIN) {
-                System.out.println("Player " + player2.getId() + " wins !");
-            }
-            else {
-                System.out.println("Player " + player1.getId() + " wins !");
-            }
-        }
+        showWin();
 
         sc.close();
     }
 
-    private static void displacement(Player currenPlayer, Player secondPlayer) {
-        StringBuilder startStringBuilder = new StringBuilder("Player ")
-                                                    .append(currenPlayer.getId())
-                                                    .append(" (Your Score ");
+    private static void ingame() {
+        boolean breakq = false;
+        while (player2.getScore() < MAX_SCORE && !breakq)
+        {
+            if(displacement(player1, player2)) {
+                displacement(player1, player2, ColorCase.WHITE);
 
-        StringBuilder updatableStringBuilder = new StringBuilder(Integer.toString(currenPlayer.getScore()))
-                                                    .append(" to ")
-                                                    .append(Integer.toString(secondPlayer.getScore()))
-                                                    .append(") choose a displacement : (block ");
+                if(displacement(player2, player1)) {
+                    displacement(player2, player1, ColorCase.WHITE);
+                }
+                else
+                    breakq = true;
+            }
+            else
+                breakq = true;
+        }
+    }
 
-        StringBuilder finishStringBuilder = new StringBuilder(currenPlayer.getColor().toString())
-                                                    .append(")");
+    private static String buildTextSectorInGame(Player currenPlayer, Player secondPlayer, ColorCase blockColor) {
+        return new StringBuilder("Player ")
+                .append(currenPlayer.getId())
+                .append(" (Your Score ")
+                .append(Integer.toString(currenPlayer.getScore()))
+                .append(" to ")
+                .append(Integer.toString(secondPlayer.getScore()))
+                .append(") choose a displacement : (block ")
+                .append(blockColor.toString())
+                .append(")")
+                .toString();
+    }
 
-        StringBuilder totalStringBuilder = new StringBuilder(startStringBuilder)
-                                                    .append(updatableStringBuilder)
-                                                    .append(finishStringBuilder);
+    private static String buildTextSectorInGame(Player currenPlayer, Player secondPlayer) {
+        return buildTextSectorInGame(currenPlayer, secondPlayer, currenPlayer.getColor());
+    }
+
+    private static boolean displacement(Player currenPlayer, Player secondPlayer) {
+        displacement(currenPlayer, secondPlayer, currenPlayer.getColor());
+
+        return currenPlayer.getScore() < MAX_SCORE;
+    }
+
+    private static void displacement(Player currenPlayer, Player secondPlayer, ColorCase color) {
+        board.setCurrentColor(color);
         boolean good = false;
-        
-        board.setCurrentColor(currenPlayer.getColor());
 
         System.out.println(board);
-        
-        System.out.println(currenPlayer.getPossibleDisplament());
+
+        System.out.println(currenPlayer.getPossibleDisplament(color));
         do {
+            System.out.println(buildTextSectorInGame(currenPlayer, secondPlayer, color));
 
-            System.out.println(totalStringBuilder);
-
-            good = currenPlayer.displacement(sc.nextLine());
+            good = currenPlayer.displacement(sc.nextLine(), color);
         }
         while (!good);
+    }
+
+    private static void showWin() {
+
         
-        updatableStringBuilder = new StringBuilder(Integer.toString(currenPlayer.getScore()))
-                                        .append(" to ")
-                                        .append(Integer.toString(secondPlayer.getScore()))
-                                        .append(") choose a displacement : (block ");
 
-        finishStringBuilder = new StringBuilder("WHITE)");
-
-        totalStringBuilder = new StringBuilder(startStringBuilder)
-                                    .append(updatableStringBuilder)
-                                    .append(finishStringBuilder);
-        
-        board.setCurrentColor(ColorCase.WHITE);
-        System.out.println(board);
-
-        System.out.println(currenPlayer.getPossibleDisplamentWhite());
-        do {
-            System.out.println(totalStringBuilder.toString());
-
-            good = currenPlayer.displacement(sc.nextLine(), ColorCase.WHITE);
+        if (player1.getScore() >= MAX_SCORE) {
+            if(player2.getScore() >= MIN_SCORE_TO_WIN) {
+                System.out.println(buildWinText(player1, player2));
+            }
+            else {
+                System.out.println(buildWinText(player2, player1));
+            }
         }
-        while (!good);
+        else {
+            if(player1.getScore() >= MIN_SCORE_TO_WIN) {
+                System.out.println(buildWinText(player1, player2));
+            }
+            else {
+                System.out.println(buildWinText(player2, player1));
+            }
+        }
+
+    }
+
+    private static String buildWinText(Player playerWin, Player playerLose) {
+        return new StringBuilder("Player ")
+                    .append(playerWin.getId())
+                    .append(" wins !")
+                    .append("\n with ")
+                    .append(playerWin.getScore())
+                    .append(" to ")
+                    .append(playerLose.getScore())
+                    .toString();
     }
 
     static Board getBoard() {

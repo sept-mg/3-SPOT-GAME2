@@ -11,11 +11,11 @@ public class Board {
     private Movement[] currentMovements;
     private int maxMovement;
 
-    public static final int BLOCK_SIZE = 2;
-    public static final int SIZE = 9;
-    public static final int X_SIZE = 3;
-    public static final int Y_SIZE = 3;
-    public static final int NB_BLOCK = 3;
+    static final int BLOCK_SIZE = 2;
+    static final int SIZE = 9;
+    static final int X_SIZE = 3;
+    static final int Y_SIZE = 3;
+    static final int NB_BLOCK = 3;
 
     private static final int CASE_STRING_SIZE = 7;
     public Board() {

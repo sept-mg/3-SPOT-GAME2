@@ -14,16 +14,17 @@ public class Player {
     }
 
     public String getPossibleDisplament() {
+        return getPossibleDisplament(this.color);
+    }
+
+    public String getPossibleDisplament(ColorCase color) {
+        assert color == this.color || color == ColorCase.WHITE;
+
         ThreeSpotGame.getBoard().setCurrentColor(color);
         isPlaying = true;
         return ThreeSpotGame.getBoard().getBoardAllMovement();
     }
 
-    public String getPossibleDisplamentWhite() {
-        ThreeSpotGame.getBoard().setCurrentColor(ColorCase.WHITE);
-        isPlaying = true;
-        return ThreeSpotGame.getBoard().getBoardAllMovement();
-    }
     public boolean displacement(String id) {
         return displacement(id, color);
     }
@@ -49,9 +50,7 @@ public class Player {
 
         int temp = ThreeSpotGame.getBoard().move(i);
         if(colorMove == color) {
-            System.out.println("Score : " + temp);
             score += temp;
-            System.out.println("Score : " + score);
         }
 
         isPlaying = false;
