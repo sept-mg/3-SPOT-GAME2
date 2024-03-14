@@ -57,10 +57,6 @@ public class ThreeSpotGame
                 .toString();
     }
 
-    private static String buildTextSectorInGame(Player currenPlayer, Player secondPlayer) {
-        return buildTextSectorInGame(currenPlayer, secondPlayer, currenPlayer.getColor());
-    }
-
     private static void displacement(Player currenPlayer, Player secondPlayer) {
         displacement(currenPlayer, secondPlayer, currenPlayer.getColor());
     }
