@@ -39,29 +39,9 @@ public class ThreeSpotGame
             player2 = new Player(red, 2);
         }
 
-        ingame();
-
-        showWin();
+        System.out.println(winMessage(ingame()));
 
         sc.close();
-    }
-
-    private static void ingame() {
-        boolean breakq = false;
-        while (player2.getScore() < MAX_SCORE && !breakq)
-        {
-            if(displacement(player1, player2)) {
-                displacement(player1, player2, ColorCase.WHITE);
-
-                if(displacement(player2, player1)) {
-                    displacement(player2, player1, ColorCase.WHITE);
-                }
-                else
-                    breakq = true;
-            }
-            else
-                breakq = true;
-        }
     }
 
     private static String buildTextSectorInGame(Player currenPlayer, Player secondPlayer, ColorCase blockColor) {
@@ -81,10 +61,8 @@ public class ThreeSpotGame
         return buildTextSectorInGame(currenPlayer, secondPlayer, currenPlayer.getColor());
     }
 
-    private static boolean displacement(Player currenPlayer, Player secondPlayer) {
+    private static void displacement(Player currenPlayer, Player secondPlayer) {
         displacement(currenPlayer, secondPlayer, currenPlayer.getColor());
-
-        return currenPlayer.getScore() < MAX_SCORE;
     }
 
     private static void displacement(Player currenPlayer, Player secondPlayer, ColorCase color) {
@@ -102,37 +80,46 @@ public class ThreeSpotGame
         while (!good);
     }
 
-    private static void showWin() {
+    private static Player ingame() {
+        Player playerWasStopped = null;
+        while (player2.getScore() < MAX_SCORE && playerWasStopped == null)
+        {
+            displacement(player1, player2);
+            if(player1.getScore() < MAX_SCORE) {
+                displacement(player1, player2, ColorCase.WHITE);
 
-        
-
-        if (player1.getScore() >= MAX_SCORE) {
-            if(player2.getScore() >= MIN_SCORE_TO_WIN) {
-                System.out.println(buildWinText(player1, player2));
+                displacement(player2, player1);
+                if(player2.getScore() < MAX_SCORE) {
+                    displacement(player2, player1, ColorCase.WHITE);
+                }
+                else
+                    playerWasStopped = player2;
             }
-            else {
-                System.out.println(buildWinText(player2, player1));
-            }
-        }
-        else {
-            if(player1.getScore() >= MIN_SCORE_TO_WIN) {
-                System.out.println(buildWinText(player1, player2));
-            }
-            else {
-                System.out.println(buildWinText(player2, player1));
-            }
+            else
+                playerWasStopped = player1;
         }
 
+        return playerWasStopped;
+    }
+
+    private static String winMessage(Player playerWasStopped) {
+        assert playerWasStopped != null;
+
+        Player secondPlayer = playerWasStopped == player1 ? player2 : player1;
+
+        return secondPlayer.getScore() < MIN_SCORE_TO_WIN ? buildWinText(secondPlayer, playerWasStopped) : buildWinText(playerWasStopped, secondPlayer);
     }
 
     private static String buildWinText(Player playerWin, Player playerLose) {
         return new StringBuilder("Player ")
                     .append(playerWin.getId())
                     .append(" wins !")
-                    .append("\n with ")
+                    .append("\nWith ")
                     .append(playerWin.getScore())
-                    .append(" to ")
+                    .append(" points at ")
                     .append(playerLose.getScore())
+                    .append(" points.")
+                    .append(playerWin.getScore() < playerLose.getScore() ? new StringBuilder(" Player ").append(playerLose.getId()).append(" forgot the minimum score rule (the second player need a minimum above or equals to ").append(Integer.toString(MIN_SCORE_TO_WIN)).append(")") : "")
                     .toString();
     }
 
