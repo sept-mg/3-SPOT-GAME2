@@ -1,0 +1,22 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{2}{}%
+\contentsline {subsection}{1.1 Fonctionnalités du programme}{2}{}%
+\contentsline {subsection}{1.2 Gameplay interactif}{2}{}%
+\contentsline {section}{\numberline {2}Diagramme (UML) de dépendance}{3}{}%
+\contentsline {section}{\numberline {3}Tests Unitaires}{4}{}%
+\contentsline {subsection}{3.1 BlockTest.java (valide)}{4}{}%
+\contentsline {subsection}{3.2 BoardTest.java (valide)}{7}{}%
+\contentsline {subsection}{3.3 DirectionsTest.java (valide)}{10}{}%
+\contentsline {subsection}{3.4 MovementTest.java (valide)}{14}{}%
+\contentsline {subsection}{3.5 BlockTest.java (valide)}{16}{}%
+\contentsline {subsection}{3.6 ThreeSpotGameTest.java (valide)}{20}{}%
+\contentsline {section}{\numberline {4}Code Source}{21}{}%
+\contentsline {subsection}{4.1 AdjDirection.java}{21}{}%
+\contentsline {subsection}{4.2 ColorCase.java}{22}{}%
+\contentsline {subsection}{4.3 Block.java}{23}{}%
+\contentsline {subsection}{4.4 Movement.java}{27}{}%
+\contentsline {subsection}{4.5 Directions.java}{29}{}%
+\contentsline {subsection}{4.6 Player.java}{32}{}%
+\contentsline {subsection}{4.7 ThreeSpotGame.java}{36}{}%
+\contentsline {subsection}{4.8 Board.java}{42}{}%
+\contentsline {section}{\numberline {5}Conclusion}{52}{}%
