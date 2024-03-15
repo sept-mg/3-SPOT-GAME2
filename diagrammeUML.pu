@@ -101,9 +101,11 @@ package ThreeSpotGame2 {
 
     ThreeSpotGame --* Board : 1
     ThreeSpotGame --* Player : 2
+    ThreeSpotGame --> ColorCase
+    Board --> ColorCase
     Player --* ColorCase : 1
     Board --* Block : 3
-    Board --> Movement
+    Board --* Movement : x
     Board --> Directions
     Block --* ColorCase : 1
     Movement --* AdjDirection : 1
