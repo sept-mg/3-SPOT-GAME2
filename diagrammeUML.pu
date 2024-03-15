@@ -1,0 +1,112 @@
+@startuml ThreeSpotGame2
+
+package ThreeSpotGame2 {
+    enum ColorCase {
+        EMPTY
+        RED
+        WHITE
+        BLUE
+    }
+
+    enum AdjDirection {
+        UP
+        RIGHT
+    }
+
+    class Board {
+        - redBlock: Block
+        - whiteBlock: Block
+        - blueBlock: Block
+        - videCaseList: int[]
+        - currentPlayedColor: ColorCase
+        - currentMovements: Movement[]
+        - maxMovement: int
+        + Board()
+        + setCurrentColor(color: ColorCase): void
+        + moveable(position: int): Directions
+        + toString(): String
+        + getBoardAllMovement(): String
+        + getMaxMovement(): int
+        + move(idMovement: int): int
+        + getCurrentColor(): ColorCase
+        + colorPeaked(): boolean
+    }
+
+    class Block {
+        - color: ColorCase
+        - positions: ColorCase[]
+        + Block(color: ColorCase, positions: int[])
+        + getColor(): ColorCase
+        + getPosition(placement: int): ColorCase
+        + getPositionOrdinal(index: int): int
+        + isInThisPosition(placement: int): boolean
+        + positionInRange(placement: int): boolean
+        + updatePosition(positions: int[]): void
+    }
+
+    class Movement {
+        - placement: int
+        - direction: AdjDirection
+        + Movement(index: int, direction: AdjDirection)
+        + getPlacement(): int
+        + setPlacement(index: int): void
+        + getDirection(): AdjDirection
+        + setDirection(direction: AdjDirection): void
+    }
+
+    class Directions {
+        - allOrientations: AdjDirection[]
+        + Directions(directions: AdjDirection...)
+        + has(direction: AdjDirection): boolean
+        + add(direction: AdjDirection): void
+        + getAllOrientations(): AdjDirection[]
+        + toInt(): int
+    }
+
+    class Player {
+        - color: ColorCase
+        - isPlaying: boolean
+        - score: int
+        - id: int
+        + Player(color: ColorCase, id: int)
+        + getPossibleDisplament(board: Board): String
+        + getPossibleDisplament(color: ColorCase, board: Board): String
+        + displacement(id: String, board: Board): boolean
+        + displacement(id: String, colorMove: ColorCase, board: Board): boolean
+        + getScore(): int
+        + getId(): int
+        + getColor(): ColorCase
+    }
+
+    class ThreeSpotGame {
+        - board: Board
+        - player1: Player
+        - player2: Player
+        - sc: Scanner
+        - MAX_SCORE: int
+        - MIN_SCORE_TO_WIN: int
+        - NB_PLAYER: int
+        + ThreeSpotGame()
+        + playerPeekColor(): void
+        + buildTextSectorInGame(currentPlayer: Player, secondPlayer: Player, blockColor: ColorCase): String
+        + displacement(currentPlayer: Player, secondPlayer: Player): void
+        + displacement(currentPlayer: Player, secondPlayer: Player, color: ColorCase): void
+        + ingame(): Player
+        + winMessage(playerWasStopped: Player): String
+        + buildWinText(playerWin: Player, playerLose: Player): String
+    }
+}
+
+
+
+    ThreeSpotGame --* Board : 1
+    ThreeSpotGame --* Player : 2
+    Player --* ColorCase : 1
+    Board --* Block : 3
+    Board --> Movement
+    Board --> Directions
+    Block --* ColorCase : 1
+    Movement --* AdjDirection : 1
+    Directions --* AdjDirection : x
+
+@enduml
