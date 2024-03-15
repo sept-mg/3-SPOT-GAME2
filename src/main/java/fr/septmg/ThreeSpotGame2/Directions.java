@@ -4,24 +4,23 @@ public class Directions {
 
     private AdjDirection allOrientations[];
 
-    public Directions() {
-        allOrientations = new AdjDirection[AdjDirection.values().length];
-    }
-
     public Directions(AdjDirection... directions) {
-        this();
+        allOrientations = new AdjDirection[AdjDirection.values().length];
+        
+        if(directions != null){
 
-        assert directions.length <= allOrientations.length;
-        assert directions.length > 0;
-
-        for (int i = 0; i < directions.length; ++i) {
-            if(directions[i] != null && !has(directions[i])) {
-                allOrientations[directions[i].ordinal()] = directions[i];
+            if(directions.length > 0) {
+                for (int i = 0; i < directions.length; ++i) {
+                    if(directions[i] != null && !has(directions[i])) {
+                        allOrientations[directions[i].ordinal()] = directions[i];
+                    }
+                }
             }
         }
     }
 
     public boolean has(AdjDirection direction) {
+        assert direction != null;
         return allOrientations[direction.ordinal()] != null;
     }
     

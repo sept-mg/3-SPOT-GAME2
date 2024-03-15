@@ -1,20 +1,13 @@
 package fr.septmg.ThreeSpotGame2;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-/**
- * Unit test for simple App.
- */
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 public class ThreeSpotGameTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
     @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+    public void test() {
+        ThreeSpotGame game;
+
     }
+
 }

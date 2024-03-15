@@ -4,20 +4,27 @@ import java.util.Scanner;
 
 public class ThreeSpotGame
 {
-    private static Board board;
+    private Board board;
 
-    private static Player player1, player2;
-    private static Scanner sc;
+    private Player player1, player2;
+    private Scanner sc;
 
     final static int MAX_SCORE = 12;
     final static int MIN_SCORE_TO_WIN = 6;
+    final static int NB_PLAYER = 2;
     
-    public static void main( String[] args )
+    public ThreeSpotGame()
     {
         board = new Board();
 
-        ColorCase red = ColorCase.RED;
-        ColorCase blue = ColorCase.BLUE;
+        playerPeekColor();
+
+        System.out.println(winMessage(ingame()));
+
+        sc.close();
+    }
+
+    private void playerPeekColor() {
         String input = "";
         sc = new Scanner(System.in);
 
@@ -30,21 +37,17 @@ public class ThreeSpotGame
 
         if(input.equals("R"))
         {
-            player1 = new Player(red, 1);
-            player2 = new Player(blue, 2);
+            player1 = new Player(ColorCase.RED, 1);
+            player2 = new Player(ColorCase.BLUE, 2);
         }
         else
         {
-            player1 = new Player(blue, 1);
-            player2 = new Player(red, 2);
+            player1 = new Player(ColorCase.BLUE, 1);
+            player2 = new Player(ColorCase.RED, 2);
         }
-
-        System.out.println(winMessage(ingame()));
-
-        sc.close();
     }
 
-    private static String buildTextSectorInGame(Player currenPlayer, Player secondPlayer, ColorCase blockColor) {
+    private String buildTextSectorInGame(Player currenPlayer, Player secondPlayer, ColorCase blockColor) {
         return new StringBuilder("Player ")
                 .append(currenPlayer.getId())
                 .append(" (Your Score ")
@@ -57,26 +60,26 @@ public class ThreeSpotGame
                 .toString();
     }
 
-    private static void displacement(Player currenPlayer, Player secondPlayer) {
+    private void displacement(Player currenPlayer, Player secondPlayer) {
         displacement(currenPlayer, secondPlayer, currenPlayer.getColor());
     }
 
-    private static void displacement(Player currenPlayer, Player secondPlayer, ColorCase color) {
+    private void displacement(Player currenPlayer, Player secondPlayer, ColorCase color) {
         board.setCurrentColor(color);
         boolean good = false;
 
         System.out.println(board);
 
-        System.out.println(currenPlayer.getPossibleDisplament(color));
+        System.out.println(currenPlayer.getPossibleDisplament(color, board));
         do {
             System.out.println(buildTextSectorInGame(currenPlayer, secondPlayer, color));
 
-            good = currenPlayer.displacement(sc.nextLine(), color);
+            good = currenPlayer.displacement(sc.nextLine(), color, board);
         }
         while (!good);
     }
 
-    private static Player ingame() {
+    private Player ingame() {
         Player playerWasStopped = null;
         while (player2.getScore() < MAX_SCORE && playerWasStopped == null)
         {
@@ -98,7 +101,7 @@ public class ThreeSpotGame
         return playerWasStopped;
     }
 
-    private static String winMessage(Player playerWasStopped) {
+    private String winMessage(Player playerWasStopped) {
         assert playerWasStopped != null;
 
         Player secondPlayer = playerWasStopped == player1 ? player2 : player1;
@@ -106,7 +109,7 @@ public class ThreeSpotGame
         return secondPlayer.getScore() < MIN_SCORE_TO_WIN ? buildWinText(secondPlayer, playerWasStopped) : buildWinText(playerWasStopped, secondPlayer);
     }
 
-    private static String buildWinText(Player playerWin, Player playerLose) {
+    private String buildWinText(Player playerWin, Player playerLose) {
         return new StringBuilder("Player ")
                     .append(playerWin.getId())
                     .append(" wins !")
@@ -115,11 +118,10 @@ public class ThreeSpotGame
                     .append(" points at ")
                     .append(playerLose.getScore())
                     .append(" points.")
-                    .append(playerWin.getScore() < playerLose.getScore() ? new StringBuilder(" Player ").append(playerLose.getId()).append(" forgot the minimum score rule (the second player need a minimum above or equals to ").append(Integer.toString(MIN_SCORE_TO_WIN)).append(")") : "")
+                    .append(playerWin.getScore() < playerLose.getScore() ? new StringBuilder(" Player ")
+                                                                                .append(playerLose.getId())
+                                                                                .append(" forgot the minimum score rule (the second player need a minimum above or equals to ")
+                                                                                .append(Integer.toString(MIN_SCORE_TO_WIN)).append(").") : "")
                     .toString();
-    }
-
-    static Board getBoard() {
-        return board;
     }
 }

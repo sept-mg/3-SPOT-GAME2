@@ -7,29 +7,32 @@ public class Player {
     private int id;
 
     public Player(ColorCase color, int id) {
+        assert color != null && color != ColorCase.EMPTY && color != ColorCase.WHITE;
+        assert id > 0;
+        assert id <= ThreeSpotGame.NB_PLAYER;
         this.color = color;
         this.isPlaying = false;
         this.score = 0;
         this.id = id;
     }
 
-    public String getPossibleDisplament() {
-        return getPossibleDisplament(this.color);
+    public String getPossibleDisplament(Board board) {
+        return getPossibleDisplament(this.color, board);
     }
 
-    public String getPossibleDisplament(ColorCase color) {
+    public String getPossibleDisplament(ColorCase color, Board board) {
         assert color == this.color || color == ColorCase.WHITE;
 
-        ThreeSpotGame.getBoard().setCurrentColor(color);
+        board.setCurrentColor(color);
         isPlaying = true;
-        return ThreeSpotGame.getBoard().getBoardAllMovement();
+        return board.getBoardAllMovement();
     }
 
-    public boolean displacement(String id) {
-        return displacement(id, color);
+    public boolean displacement(String id, Board board) {
+        return displacement(id, color, board);
     }
 
-    public boolean displacement(String id, ColorCase colorMove) {
+    public boolean displacement(String id, ColorCase colorMove, Board board) {
         assert isPlaying;
         assert color == colorMove || color == ColorCase.WHITE;
         int i = 0;
@@ -41,14 +44,14 @@ public class Player {
             return false;
         }
 
-        boolean validId = i <= ThreeSpotGame.getBoard().getMaxMovement();
+        boolean validId = i <= board.getMaxMovement();
         assert validId;
 
         if(!validId){
             return false;
         } 
 
-        int temp = ThreeSpotGame.getBoard().move(i);
+        int temp = board.move(i);
         if(colorMove == color) {
             score += temp;
         }

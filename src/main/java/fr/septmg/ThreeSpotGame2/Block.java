@@ -6,7 +6,8 @@ public class Block {
     // private HashMap<Integer, AdjOriention> possibleDisplament;
 
     public Block(ColorCase color, int[] positions) {
-        assert positionListInRange(positions);
+        assert color != null && color != ColorCase.EMPTY;
+        assert positionListNotToLongOrToShort(positions);
         this.color = color;
         makePosition(positions);
 
@@ -20,7 +21,7 @@ public class Block {
         }
     }
 
-    public static boolean positionListInRange(int[] position) {
+    public static boolean positionListNotToLongOrToShort(int[] position) {
         return position != null && position.length < Board.SIZE;
     }
 
@@ -47,7 +48,7 @@ public class Block {
     }
 
     public void updatePosition(int... positions) {
-        assert positionListInRange(positions);
+        assert positionListNotToLongOrToShort(positions);
         makePosition(positions);
     }
 

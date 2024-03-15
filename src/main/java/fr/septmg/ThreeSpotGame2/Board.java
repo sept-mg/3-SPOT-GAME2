@@ -227,4 +227,12 @@ public class Board {
 
         return point;
     }
+
+    public ColorCase getCurrentColor() {
+        return currentPlayedColor;
+    }
+
+    public boolean colorPeaked() {
+        return currentPlayedColor != null;
+    }
 }
