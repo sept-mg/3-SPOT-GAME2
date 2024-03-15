@@ -1,6 +1,8 @@
 @startuml ThreeSpotGame2
 
 package ThreeSpotGame2 {
+    
+
     enum ColorCase {
         EMPTY
         RED

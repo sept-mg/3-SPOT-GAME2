@@ -1,5 +1,8 @@
 package fr.septmg.ThreeSpotGame2;
 
+/**
+ * Represents the game board for the ThreeSpot game.
+ */
 public class Board {
     private Block redBlock;
     private Block whiteBlock;
@@ -11,18 +14,40 @@ public class Board {
     private Movement[] currentMovements;
     private int maxMovement;
 
+    /**
+     * The size of a block on the board.
+     */
     static final int BLOCK_SIZE = 2;
+
+    /**
+     * The total size of the board.
+     */
     static final int SIZE = 9;
+
+    /**
+     * The number of columns on the board.
+     */
     static final int X_SIZE = 3;
+
+    /**
+     * The number of rows on the board.
+     */
     static final int Y_SIZE = 3;
+
+    /**
+     * The number of blocks on the board.
+     */
     static final int NB_BLOCK = 3;
 
     private static final int CASE_STRING_SIZE = 7;
+
+    /**
+     * Constructs a new Board object with default configurations.
+     */
     public Board() {
         int x_milieu = (X_SIZE-1)/2, y_milieu = (Y_SIZE-1)/2;
         int tempRed[] = new int[BLOCK_SIZE], tempWhite[] = new int[BLOCK_SIZE], tempBlue[] = new int[BLOCK_SIZE];
 
-        
         for(int i = 0; i < BLOCK_SIZE; ++i) {
             tempRed[i] = i + x_milieu;
             tempWhite[i] = i + x_milieu + y_milieu * X_SIZE;
@@ -36,22 +61,31 @@ public class Board {
         currentMovements = new Movement[videCaseList.length * AdjDirection.values().length];
     }
 
+    /**
+     * Sets the current played color.
+     *
+     * @param color The color to set as the current played color.
+     * @throws AssertionError If the color is empty.
+     */
     public void setCurrentColor(ColorCase color) {
         assert color != ColorCase.EMPTY;
         this.currentPlayedColor = color;
     }
 
+     /**
+     * Gets the color case at the specified position on the board.
+     *
+     * @param position The position on the board to check.
+     * @return The color case at the specified position.
+     */
     private ColorCase getCase(int position) {
-        if(redBlock.isInThisPosition(position)) {
+        if (redBlock.isInThisPosition(position)) {
             return ColorCase.RED;
-        }
-        else if(whiteBlock.isInThisPosition(position)) {
+        } else if (whiteBlock.isInThisPosition(position)) {
             return ColorCase.WHITE;
-        }
-        else if(blueBlock.isInThisPosition(position)) {
+        } else if (blueBlock.isInThisPosition(position)) {
             return ColorCase.BLUE;
-        }
-        else {
+        } else {
             return ColorCase.EMPTY;
         }
     }
@@ -60,6 +94,12 @@ public class Board {
     //     return getCase(position).ordinal();
     // }
 
+     /**
+     * Determines the directions in which the current player can move from the specified position.
+     *
+     * @param position The position on the board to check for moveable directions.
+     * @return A Directions object representing the moveable directions from the specified position.
+     */
     public Directions moveable(int position) {
         Directions direction = new Directions();
 
@@ -90,6 +130,12 @@ public class Board {
         return direction;
     }
 
+    /**
+     * Returns a string representation of the board. Use Before getALlMovements !
+     * 
+     *
+     * @return A string representing the current state of the board.
+     */
     public String toString() {
         ColorCase currCase;
         int videCaseListIndex = 0;
@@ -113,6 +159,15 @@ public class Board {
         return sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n").toString();
     }
 
+
+    /**
+     * Generates a string representation of the board including all possible movements for the current player.
+     * Each empty cell is annotated with a number representing a possible movement, and occupied cells are labeled
+     * with the corresponding player color. Use After String the board !
+     *
+     * @return A string representing the current state of the board with all possible movements annotated.
+     * @throws AssertionError If the list of empty cells is empty or if the current played color is null or empty.
+     */
     public String getBoardAllMovement() {
         assert videCaseList.length > 0;
         assert currentPlayedColor != null && currentPlayedColor != ColorCase.EMPTY;
@@ -178,10 +233,22 @@ public class Board {
         return sb.append("*\n*       *       *       *\n* * * * * * * * * * * * *\n").toString();
     }
 
+    /**
+     * Retrieves the maximum number of movements available on the board.
+     *
+     * @return The maximum number of movements available.
+     */
     public int getMaxMovement() {
         return maxMovement;
     }
     
+    /**
+     * Moves the current player's piece according to the specified movement ID and updates the board accordingly. Use After getAllMovement !
+     *
+     * @param idMovement The ID of the movement to execute.
+     * @return The points gained from the movement.
+     * @throws AssertionError If the movement ID is invalid, or if the current played color is null or empty.
+     */
     public int move(int idMovement) {
         assert idMovement <= maxMovement && idMovement > 0;
         assert currentPlayedColor != null && currentPlayedColor != ColorCase.EMPTY;
@@ -209,6 +276,13 @@ public class Board {
         return point;
     }
 
+    /**
+     * Updates the specified block's position based on the given movement and returns the points gained.
+     *
+     * @param block The block to update.
+     * @param movement The movement to execute.
+     * @return The points gained from the movement.
+     */
     private int updateblock(Block block, Movement movement) {
         int point = 0;
         int currentPlacement = movement.getPlacement();
@@ -228,11 +302,22 @@ public class Board {
         return point;
     }
 
+    /**
+     * Retrieves the current color being played.
+     *
+     * @return The current color being played, or null if no color is currently being played.
+     */
     public ColorCase getCurrentColor() {
         return currentPlayedColor;
     }
 
+    /**
+     * Checks if a color has been selected for the current turn.
+     *
+     * @return True if a color has been selected, otherwise false.
+     */
     public boolean colorPeaked() {
         return currentPlayedColor != null;
     }
+
 }
